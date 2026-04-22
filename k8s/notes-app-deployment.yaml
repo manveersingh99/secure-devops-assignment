@@ -1,0 +1,23 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: notes-app
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: notes-app
+  template:
+    metadata:
+      labels:
+        app: notes-app
+    spec:
+      containers:
+      - name: notes-app
+        image: notes-web-app-notes-app:latest
+        imagePullPolicy: Never
+        ports:
+        - containerPort: 4000
+        env:
+        - name: MONGODB_URI
+          value: mongodb://mongo:27017/notesapp

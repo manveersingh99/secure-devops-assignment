@@ -1,0 +1,49 @@
+services:
+  notes-app:
+    build: .
+    container_name: notes-app
+    environment:
+      - PORT=4000
+      - MONGODB_URI=mongodb://mongo:27017/notesapp
+    depends_on:
+      - mongo
+    networks:
+      - app-network
+
+  mongo:
+    image: mongo
+    container_name: mongo
+    volumes:
+      - mongo_data:/data/db
+    networks:
+      - app-network
+
+  mongo-express:
+    image: mongo-express
+    container_name: mongo-express
+    ports:
+      - "8081:8081"
+    environment:
+      - ME_CONFIG_MONGODB_SERVER=mongo
+      - ME_CONFIG_BASICAUTH_USERNAME=admin
+      - ME_CONFIG_BASICAUTH_PASSWORD=admin123
+    depends_on:
+      - mongo
+    networks:
+      - app-network
+
+  nginx:
+    build: ./nginx
+    container_name: nginx
+    ports:
+      - "443:443"
+    depends_on:
+      - notes-app
+    networks:
+      - app-network
+
+networks:
+  app-network:
+
+volumes:
+  mongo_data:
