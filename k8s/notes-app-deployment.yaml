@@ -20,4 +20,4 @@ spec:
         - containerPort: 4000
         env:
         - name: MONGODB_URI
-          value: mongodb://mongo:27017/notesapp
+          value: mongodb://mongo-service:27017/notesapp
